@@ -178,15 +178,6 @@
                             scope.$destroy();
                             privateMethods.closeDialogElement($dialog, value);
                         }
-                        if (defers[id]) {
-                            defers[id].resolve({
-                                id: id,
-                                value: value,
-                                $dialog: $dialog,
-                                remainingDialogs: dialogsCount
-                            });
-                            delete defers[id];
-                        }
                         if (scopes[id]) {
                             delete scopes[id];
                         }
@@ -206,6 +197,16 @@
                             privateMethods.resetBodyPadding();
                         }
                         $rootScope.$broadcast('ngDialog.closed', $dialog, value);
+                        var id = $dialog.attr('id');
+                        if (defers[id]) {
+                            defers[id].resolve({
+                                id: id,
+                                value: value,
+                                $dialog: $dialog,
+                                remainingDialogs: dialogsCount
+                            });
+                            delete defers[id];
+                        }
                     },
 
                     closeDialog: function ($dialog, value) {
